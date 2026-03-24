@@ -10,6 +10,7 @@ const AddStudent = () => {
   const [form, setForm] = useState({
     name: "",
     rollNo: "",
+    email: "",   // ✅ ADD
     classId: "",
     year: "",
     password: ""
@@ -21,7 +22,14 @@ const AddStudent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.rollNo || !form.classId || !form.year || !form.password) {
+    if (
+      !form.name ||
+      !form.rollNo ||
+      !form.email ||    // ✅ ADD
+      !form.classId ||
+      !form.year ||
+      !form.password
+    ) {
       toast.error("All fields are required");
       return;
     }
@@ -33,12 +41,13 @@ const AddStudent = () => {
       setForm({
         name: "",
         rollNo: "",
+        email: "",
         classId: "",
         year: "",
         password: ""
       });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error(err?.data?.message || "Failed to add student");
     }
   };
@@ -54,7 +63,7 @@ const AddStudent = () => {
           placeholder="Student Name"
           value={form.name}
           onChange={handleChange}
-          className="input"
+          className="w-full border p-2 rounded"
         />
 
         <input
@@ -62,15 +71,24 @@ const AddStudent = () => {
           placeholder="Roll No"
           value={form.rollNo}
           onChange={handleChange}
-          className="input"
+          className="w-full border p-2 rounded"
         />
 
-        {/* 🔽 Dynamic Class Dropdown */}
+        {/* ✅ EMAIL FIELD */}
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+
         <select
           name="classId"
           value={form.classId}
           onChange={handleChange}
-          className="input"
+          className="w-full border p-2 rounded"
         >
           <option value="">Select Class</option>
           {classLoading ? (
@@ -89,7 +107,7 @@ const AddStudent = () => {
           placeholder="Year"
           value={form.year}
           onChange={handleChange}
-          className="input"
+          className="w-full border p-2 rounded"
         />
 
         <input
@@ -98,7 +116,7 @@ const AddStudent = () => {
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
-          className="input"
+          className="w-full border p-2 rounded"
         />
 
         <button

@@ -4,6 +4,8 @@ import authReducer from "../features/auth/authSlice";
 import { classApi } from "../features/class/classApi";
 import { subjectApi } from "../features/subject/subjectApi"; // ✅ ADD THIS
 import { studentApi } from "../features/student/studentApi";
+import { resultApi } from "../features/result/resultApi";
+
 
 
 export const store = configureStore({
@@ -12,6 +14,8 @@ export const store = configureStore({
     [classApi.reducerPath]: classApi.reducer,
     [subjectApi.reducerPath]: subjectApi.reducer, // ✅ ADD THIS
     [studentApi.reducerPath]: studentApi.reducer,
+    [resultApi.reducerPath]: resultApi.reducer,
+
 
     auth: authReducer
   },
@@ -20,6 +24,7 @@ export const store = configureStore({
       authApi.middleware,
       classApi.middleware,
       subjectApi.middleware, // ✅ ADD THIS
-      studentApi.middleware
+      studentApi.middleware,
+      resultApi.middleware
     )
 });

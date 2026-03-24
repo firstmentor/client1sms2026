@@ -6,6 +6,9 @@ const Sidebar = ({ open, setOpen, collapsed, setCollapsed }) => {
   const [classOpen, setClassOpen] = useState(false);
   const [subjectOpen, setSubjectOpen] = useState(false);
   const [studentOpen, setStudentOpen] = useState(false);
+  const [resultOpen, setResultOpen] = useState(false);
+  
+
 
 
   const closeSidebar = () => {
@@ -31,9 +34,8 @@ const Sidebar = ({ open, setOpen, collapsed, setCollapsed }) => {
           className="hidden md:block"
         >
           <ChevronsLeft
-            className={`transition-transform ${
-              collapsed ? "rotate-180" : ""
-            }`}
+            className={`transition-transform ${collapsed ? "rotate-180" : ""
+              }`}
           />
         </button>
       </div>
@@ -141,11 +143,41 @@ const Sidebar = ({ open, setOpen, collapsed, setCollapsed }) => {
           </div>
         )}
 
-        
+        {/* ===== result Dropdown ===== */}
+        <button
+          onClick={() => setResultOpen(!resultOpen)}
+          className="menu w-full flex justify-between items-center"
+        >
+          <span>📚 {!collapsed && "Result"}</span>
+          {!collapsed && (
+            <ChevronRight
+              className={`transition ${resultOpen ? "rotate-90" : ""}`}
+            />
+          )}
+        </button>
 
-        <NavLink onClick={closeSidebar} to="/admin/results" className="menu">
-          📝 {!collapsed && "Results"}
-        </NavLink>
+        {resultOpen && !collapsed && (
+          <div className="ml-6 space-y-1">
+            <NavLink
+              onClick={closeSidebar}
+              to="/admin/AddBulkResult"
+              className="submenu"
+            >
+              ➕ Create Result
+            </NavLink>
+            <NavLink
+              onClick={closeSidebar}
+              to="/admin/allresult"
+              className="submenu"
+            >
+              📋 Manage Result
+            </NavLink>
+          </div>
+        )}
+
+
+
+       
 
         <NavLink onClick={closeSidebar} to="/admin/notices" className="menu">
           📢 {!collapsed && "Notices"}

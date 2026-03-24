@@ -140,6 +140,7 @@ const ManageClasses = () => {
           </form>
         </div>
       )}
+      
     </div>
   );
 };

@@ -15,6 +15,8 @@ export const studentApi = createApi({
       providesTags: ["Student"]
     }),
 
+    
+
     // ✅ ADD STUDENT
     addStudent: builder.mutation({
       query: (data) => ({
@@ -27,7 +29,7 @@ export const studentApi = createApi({
 
     // ✅ UPDATE STUDENT
     updateStudent: builder.mutation({
-      query: ({ id, data }) => ({
+      query: ({ id, ...data }) => ({
         url: `/updateStudent/${id}`,
         method: "PUT",
         body: data

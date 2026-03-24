@@ -15,6 +15,10 @@ import CreateSubject from "./pages/admin/subject/CreateSubject";
 import ManageSubject from "./pages/admin/subject/ManageSubject";
 import AddStudent from "./pages/admin/student/AddStudent";
 import StudentList from "./pages/admin/student/StudentList";
+import AddBulkResult from "./pages/admin/result/AddBulkResult";
+import AdminResultList from "./pages/admin/result/AdminResultList";
+import AdminRoute from "./routes/AdminRoute";
+import StudentResult from "./pages/StudentResult";
 
 function App() {
   return (
@@ -49,11 +53,20 @@ function App() {
           }
         />
 
+         <Route
+          path="/student/result"
+          element={
+            <StudentLayout>
+              <StudentResult />
+            </StudentLayout>
+          }
+        />
+
         {/* ===== ADMIN PROTECTED ROUTES ===== */}
 
 
 
-        <Route element={<ProtectedRoute role="admin" />}>
+        <Route element={<AdminRoute />}>
           <Route
             path="/admin/dashboard"
             element={
@@ -111,6 +124,24 @@ function App() {
             element={
               <AdminLayout>
                 <StudentList />
+              </AdminLayout>
+            }
+          />
+
+          <Route
+            path="/admin/AddBulkResult"
+            element={
+              <AdminLayout>
+                <AddBulkResult />
+              </AdminLayout>
+            }
+          />
+
+          <Route
+            path="/admin/allresult"
+            element={
+              <AdminLayout>
+                <AdminResultList />
               </AdminLayout>
             }
           />

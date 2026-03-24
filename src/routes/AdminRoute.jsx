@@ -1,16 +1,22 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useGetProfileQuery } from "../features/auth/authApi";
 
-const ProtectedAdmin = ({ children }) => {
-  const { data, isLoading } = useGetProfileQuery();
+const AdminRoute = () => {
+  const { data, isLoading, error } = useGetProfileQuery();
 
-  if (isLoading) return <p>Loading...</p>;
-
-  if (!data || data.role !== "admin") {
-    return <Navigate to="/admin-login" replace />; // ✅ YAHI
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  return children;
+  if (error) {
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  if (!data || data.user.role !== "admin") {
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  return <Outlet />;   // 👈 important
 };
 
-export default ProtectedAdmin;
+export default AdminRoute;
