@@ -13,11 +13,36 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await login({ email, password }).unwrap();
-      toast.success("Admin login successful ✅");
-      navigate("/admin/dashboard");
+      const response = await login({ email, password }).unwrap();
+
+      if (response) {
+        // Show success toast
+        toast.success("Admin login successful ✅", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+
+        // Navigate after a short delay so toast is visible
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 500); // 0.5 second delay
+      }
     } catch (error) {
-      toast.error("Invalid credentials ❌");
+      toast.error(
+        error?.data?.message || "Invalid credentials ❌",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
     }
   };
 

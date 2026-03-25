@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const subjectApi = createApi({
   reducerPath: "subjectApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api",
+    baseUrl: "https://sms-api-2026-1.onrender.com/api",
     credentials: "include",
   }),
   tagTypes: ["Subject"],

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const studentApi = createApi({
   reducerPath: "studentApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api", // apna backend url
+    baseUrl: "https://sms-api-2026-1.onrender.com/api", // apna backend url
     credentials: "include"
   }),
   tagTypes: ["Student"],
