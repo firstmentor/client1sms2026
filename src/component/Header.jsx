@@ -1,70 +1,124 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useGetProfileQuery,
+  useLogoutMutation,
+  authApi
+} from "../features/auth/authApi";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { data } = useGetProfileQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+
+      // 🔥 cache clear
+      dispatch(authApi.util.resetApiState());
+
+      toast.success("Logout successful");
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.log(error);
+      toast.error("Logout failed");
+    }
+  };
+
+  const user = data?.user;
 
   return (
     <header className="fixed top-0 left-0 w-full bg-blue-600 bg-opacity-95 text-white shadow-md z-50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 className="text-xl md:text-2xl font-bold">
+          Student Result Portal
+        </h1>
 
-        {/* Logo / Title */}
-        <h1 className="text-xl md:text-2xl font-bold">Student Result Portal</h1>
+        <nav className="hidden md:flex space-x-6 font-medium text-sm md:text-base items-center">
+          <Link to="/" className="hover:text-yellow-300">
+            Home
+          </Link>
 
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-6 font-medium text-sm md:text-base">
-          <Link to="/" className="hover:text-yellow-300 transition-colors">Home</Link>
-          <Link to="/login" className="hover:text-yellow-300 transition-colors">
-            Student Login
-          </Link>
-          <Link to="/admin-login" className="hover:text-yellow-300 transition-colors">
-            Admin Login
-          </Link>
+          {!user && (
+            <>
+              <Link to="/login" className="hover:text-yellow-300">
+                Student Login
+              </Link>
+              <Link to="/admin-login" className="hover:text-yellow-300">
+                Admin Login
+              </Link>
+            </>
+          )}
+
+          {user && (
+            <>
+              <span className="text-yellow-300 font-semibold">
+                👤 {user.name}
+              </span>
+
+              <Link to="/change-password" className="hover:text-yellow-300">
+                Change Password
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </nav>
 
-        {/* Mobile Hamburger */}
         <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="focus:outline-none"
-          >
-            {isOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h16M4 16h16" />
-              </svg>
-            )}
-          </button>
+          <button onClick={() => setIsOpen(!isOpen)}>☰</button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-blue-500 bg-opacity-95 px-4 pb-4 space-y-2">
-          <Link
-            to="/"
-            className="block hover:text-yellow-300 transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
+        <div className="md:hidden bg-blue-500 px-4 pb-4 space-y-2">
+          <Link to="/" onClick={() => setIsOpen(false)}>
             Home
           </Link>
-          <Link
-            to="/student-login"
-            className="block hover:text-yellow-300 transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            Student Login
-          </Link>
-          <Link
-            to="/admin-login"
-            className="block hover:text-yellow-300 transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            Admin Login
-          </Link>
+
+          {!user && (
+            <>
+              <Link to="/login" onClick={() => setIsOpen(false)}>
+                Student Login
+              </Link>
+              <Link to="/admin-login" onClick={() => setIsOpen(false)}>
+                Admin Login
+              </Link>
+            </>
+          )}
+
+          {user && (
+            <>
+              <p className="text-yellow-300 font-semibold">
+                👤 {user.name}
+              </p>
+
+              <Link to="/change-password" onClick={() => setIsOpen(false)}>
+                Change Password
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 px-3 py-1 rounded"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       )}
     </header>

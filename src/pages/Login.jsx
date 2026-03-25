@@ -1,10 +1,10 @@
 import { useLoginMutation } from "../features/auth/authApi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation(); // 🔥 isLoading added
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -13,11 +13,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
+
       if (res.user.role === "student") {
         toast.success("Student login successful ✅");
         navigate("/student/result");
       }
-
     } catch (error) {
       toast.error("Invalid credentials ❌");
     }
@@ -40,7 +40,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="admin@example.com"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -53,22 +53,25 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="********"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          {/* Submit Button */}
+          {/* Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors"
+            disabled={isLoading}
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400"
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Optional Links */}
         <p className="text-center text-sm text-gray-500 mt-4">
-          Forgot password? <a href="#" className="text-blue-500 hover:underline">Click here</a>
+          Forgot password?{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Click here
+          </a>
         </p>
       </div>
     </div>

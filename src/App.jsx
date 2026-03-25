@@ -19,6 +19,7 @@ import AddBulkResult from "./pages/admin/result/AddBulkResult";
 import AdminResultList from "./pages/admin/result/AdminResultList";
 import AdminRoute from "./routes/AdminRoute";
 import StudentResult from "./pages/StudentResult";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -58,6 +59,15 @@ function App() {
           element={
             <StudentLayout>
               <StudentResult />
+            </StudentLayout>
+          }
+        />
+
+         <Route
+          path="/change-password"
+          element={
+            <StudentLayout>
+              <ChangePassword />
             </StudentLayout>
           }
         />
