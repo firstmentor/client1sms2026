@@ -61,13 +61,18 @@ const Header = () => {
 
           {user && (
             <>
-              <span className="text-yellow-300 font-semibold">
-                👤 {user.name}
-              </span>
+              
 
+              
+              <Link to="/student/result" className="hover:text-yellow-300">
+                My Result
+              </Link>
               <Link to="/change-password" className="hover:text-yellow-300">
                 Change Password
               </Link>
+              <span className="text-yellow-300 font-semibold">
+                👤 {user.name}
+              </span>
 
               <button
                 onClick={handleLogout}
